@@ -1,3 +1,3 @@
 [DEFAULT]
-token = >token from BotFather<*>
-admins = >admins' message.from_user.id got by /getid and separated by whitespace<
+token = *token from BotFather*
+admins = *admins' message.from_user.id got by /getid and separated by whitespace*
