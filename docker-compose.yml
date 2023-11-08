@@ -1,0 +1,12 @@
+version: '3.12'
+
+services:
+  bot:
+    build: .
+    command: python bot.py
+    volumes:
+      - .:/code
+    environment:
+      BOT_TOKEN: tg_bot_token
+      ADMIN_IDS: first_tg_id, second_tg_id
+      DATE_FILE_PATH: date.txt

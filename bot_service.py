@@ -1,6 +1,6 @@
-import util.file_process as file_service
-import util.time_process as time_service
-import util.string_process as string_service
+import file_process as file_service
+import time_process as time_service
+import string_process as string_service
 
 
 def display_runtime_text():

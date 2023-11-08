@@ -1,22 +1,23 @@
+from os import environ
+import bot_service as service
 import telebot
-import util.properties_reader as props
-import service.bot_service as service
 
-bot = telebot.TeleBot(props.get_token())
+bot = telebot.TeleBot(environ['BOT_TOKEN'])
 
 _DISPLAY_BUTTON_TEXT = "🤯 Чекнуть, сколько сейчас без поломок 🤯"
 _RESET_BUTTON_TEXT = "💀 Сброс отсчёта, комп сломался 💀"
 display_button = telebot.types.KeyboardButton(_DISPLAY_BUTTON_TEXT)
 reset_button = telebot.types.KeyboardButton(_RESET_BUTTON_TEXT)
-user_markup = telebot.types.ReplyKeyboardMarkup()
+user_markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
 user_markup.add(display_button)
-admin_markup = telebot.types.ReplyKeyboardMarkup()
+admin_markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
 admin_markup.add(display_button)
 admin_markup.add(reset_button)
 
 
 def choose_markup(user_id):
-    if user_id in props.get_admins():
+    admin_ids = environ['ADMIN_IDS'].split(', ')
+    if user_id in admin_ids:
         return admin_markup
     else:
         return user_markup
@@ -43,7 +44,11 @@ def get_id(message):
 
 def on_click(message):
     user_id = str(message.from_user.id)
-    if message.text == _DISPLAY_BUTTON_TEXT:
+    if message.text == "/start":
+        start(message)
+    elif message.text == "/getid":
+        get_id(message)
+    elif message.text == _DISPLAY_BUTTON_TEXT:
         bot.send_message(message.chat.id, service.display_runtime_text(), reply_markup=choose_markup(user_id))
         bot.register_next_step_handler(message, on_click)
     elif message.text == _RESET_BUTTON_TEXT:
