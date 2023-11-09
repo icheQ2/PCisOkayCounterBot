@@ -10,3 +10,4 @@ services:
       BOT_TOKEN: tg_bot_token
       ADMIN_IDS: first_tg_id, second_tg_id
       DATE_FILE_PATH: date.txt
+    restart: always
